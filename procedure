@@ -1,1 +1,23 @@
-create database StudentAdmisssion;use StudentAdmisssion;create table Institute(InstitueId int identity(1,1) primary key, City varchar(50));create table Course(CourseId int identity(1,1) primary key, CourseName varchar(50) );create table Student(StudentId int identity(1,1) primary key, StudentName varchar(50), DOB datetime);create table Admission (AdmissionId int identity(1,1) primary key, AdmissionDate datetime,StudentId int foreign keyreferences Student(StudentId),CourseId int foreign key references Course(CourseId));use StudentAdmisssion;gocreate procedure GetAllCitiesas beginselect city from Institute;end　gocreate procedure GetAllCoursesas beginselect CourseName from Course;endgoalter procedure Register(@StudentName varchar(50), @DOB datetime, @City varchar(50), @CourseName varchar(50),@AdmisionDate datetime)as begininsert into Student(StudentName, DOB) values (@StudentName, @DOB)declare @StudentId int;declare @CourseId int;declare @InstituteId int;declare @AdmissionId int;set @StudentId=IDENT_CURRENT('Student');set @CourseId=(select CourseId from Course where CourseName=@CourseName);　insert into Admission(CourseId,StudentId,AdmissionDate)values(@CourseId,@StudentId,@AdmisionDate);end
+create database StudentAdmisssion;
+use StudentAdmisssion;
+create table Institute(InstitueId int identity(1,1) primary key, City varchar(50));
+create table Course(CourseId int identity(1,1) primary key, CourseName varchar(50) );
+create table Student(StudentId int identity(1,1) primary key,
+StudentName varchar(50), DOB datetime);
+create table Admission (AdmissionId int identity(1,1) primary key, AdmissionDate datetime,
+StudentId int foreign keyreferences Student(StudentId),CourseId int foreign key references Course(CourseId));
+use StudentAdmisssion;
+gocreate procedure GetAllCitiesas beginselect city from Institute;
+end
+gocreate procedure GetAllCoursesas beginselect CourseName from Course;
+end
+go
+alter procedure Register(@StudentName varchar(50), @DOB datetime, @City varchar(50), @CourseName varchar(50),@AdmisionDate datetime)
+as begin
+insert into Student(StudentName, DOB) values (@StudentName, @DOB)declare @StudentId int;declare @CourseId int;
+declare @InstituteId int;
+declare @AdmissionId int;
+set @StudentId=IDENT_CURRENT('Student');
+set @CourseId=(select CourseId from Course where CourseName=@CourseName);
+insert into Admission(CourseId,StudentId,AdmissionDate)values(@CourseId,@StudentId,@AdmisionDate);
+end
